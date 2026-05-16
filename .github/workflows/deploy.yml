@@ -1,20 +1,26 @@
-name: Deploy to Render
+name: News Crawler
 
 on:
-  push:
-    branches: [main]
+  schedule:
+    - cron: "0 */6 * * *"  # 6시간마다 자동 실행
+  workflow_dispatch:         # 수동 실행 버튼도 생김
 
 jobs:
-  deploy:
+  crawl:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v4
 
-      - name: Trigger Render deploy
-        run: |
-          curl -s -X POST "${{ secrets.RENDER_DEPLOY_HOOK_URL }}" \
-            -H "Content-Type: application/json" \
-            --fail
+      - name: Python 설치
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: 패키지 설치
+        run: pip install -r requirements.txt
+
+      - name: 크롤러 실행
+        run: python -m backend.crawler.run
         env:
-          RENDER_DEPLOY_HOOK_URL: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          NEWS_API_KEY: ${{ secrets.NEWS_API_KEY }}
