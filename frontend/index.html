@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI News Curator</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>AI News Curator</h1>
+    <p class="subtitle">정보과학 전문가를 위한 지능형 뉴스 큐레이션</p>
+  </header>
+
+  <main>
+    <!-- 트렌드 키워드 태그 -->
+    <section id="keywords-section">
+      <h2>지금 뜨는 키워드</h2>
+      <div id="keywords-container">
+        <span class="loading">키워드 로딩 중...</span>
+      </div>
+    </section>
+
+    <!-- AI 심층 요약 패널 -->
+    <section id="summary-section" class="hidden">
+      <div id="summary-header">
+        <h2>심층 요약: <span id="summary-keyword"></span></h2>
+        <button id="summary-close" onclick="closeSummary()">✕</button>
+      </div>
+      <div id="summary-content">
+        <div class="loading">Gemini가 분석 중입니다...</div>
+      </div>
+    </section>
+
+    <!-- 관련 뉴스 목록 -->
+    <section id="articles-section" class="hidden">
+      <h2>관련 뉴스</h2>
+      <div id="articles-container"></div>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
