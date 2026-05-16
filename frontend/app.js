@@ -1,5 +1,5 @@
 // Render에 배포된 백엔드 API 주소 (배포 후 실제 주소로 변경)
-const API = "https://ai-news-api.onrender.com/api";
+const API = "https://ai-news-curator-qstb.onrender.com/api";
 
 let activeKeyword = null;
 
