@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
-model = genai.GenerativeModel("gemini-2.0-flash")
+model = genai.GenerativeModel("gemini-1.5-flash")
 
 SYSTEM_PROMPT = """당신은 정보과학 및 AI 분야의 시니어 리서처입니다.
 주어진 뉴스 기사들을 분석하여 다음 구조로 심층 요약을 작성하세요.
