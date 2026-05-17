@@ -1,11 +1,10 @@
 import os
-import google.generativeai as genai
+from groq import Groq
 from dotenv import load_dotenv
 
 load_dotenv()
 
-genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
-model = genai.GenerativeModel("gemini-2.0-flash-lite")
+client = Groq(api_key=os.getenv("GROQ_API_KEY"))
 
 SYSTEM_PROMPT = """당신은 정보과학 및 AI 분야의 시니어 리서처입니다.
 주어진 뉴스 기사들을 분석하여 다음 구조로 심층 요약을 작성하세요.
@@ -24,16 +23,22 @@ SYSTEM_PROMPT = """당신은 정보과학 및 AI 분야의 시니어 리서처�
 
 
 async def gemini_summarize(keyword: str, articles: list) -> str:
-    # 기사 컨텍스트 구성
     context = "\n\n".join([
         f"제목: {a.title}\n내용: {(a.content or '')[:400]}"
         for a in articles
     ])
 
-    prompt = f"{SYSTEM_PROMPT}\n\n[키워드]\n{keyword}\n\n[관련 뉴스 {len(articles)}건]\n{context}"
+    prompt = f"키워드: {keyword}\n\n관련 뉴스 {len(articles)}건:\n{context}"
 
     try:
-        response = model.generate_content(prompt)
-        return response.text
+        response = client.chat.completions.create(
+            model="llama-3.3-70b-versatile",
+            messages=[
+                {"role": "system", "content": SYSTEM_PROMPT},
+                {"role": "user", "content": prompt}
+            ],
+            max_tokens=1000,
+        )
+        return response.choices[0].message.content
     except Exception as e:
-        raise RuntimeError(f"Gemini API 오류: {str(e)}")
+        raise RuntimeError(f"Groq API 오류: {str(e)}")
