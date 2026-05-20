@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from pydantic import BaseModel
 from ..database import get_db
 from ..models import Summary, Article
-from ..ai.gemini_client import gemini_summarize
+from ..ai.groq_client import gemini_summarize
 
 router = APIRouter()
 
